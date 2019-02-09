@@ -5,10 +5,13 @@ import android.os.Bundle;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.helper.ItemTouchHelper.Callback;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.hai.jedi.dragdrop.ItemMoveCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         // From the activity_main.xml
         recyclerView = findViewById(R.id.recyclerView);
+
+        populateRecyclerView();
     }
 
     private void populateRecyclerView(){
@@ -32,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
                         );
         mAdapter = new RecyclerViewAdapter(stringList);
 
-        ItemTouchHelper.Callback call = new ItemMoveCallBack(mAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        Callback call = new ItemMoveCallback((ItemTouchHelperContract) mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(call);
         touchHelper.attachToRecyclerView(recyclerView);
 
         recyclerView.setAdapter(mAdapter);

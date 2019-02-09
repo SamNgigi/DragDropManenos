@@ -8,10 +8,14 @@ import android.view.View;
 import android.view.LayoutInflater;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+
+import android.graphics.Color;
 
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder>{
+public class RecyclerViewAdapter
+        extends RecyclerView.Adapter<MyViewHolder>
+        implements ItemTouchHelperContract {
 
     private ArrayList<String> data;
     // We add an override constructor that will allow us to work  with
@@ -29,7 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position){
         holder.bindText(data, position);
     }
 
@@ -37,4 +41,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<MyViewHolder>{
     public int getItemCount(){
         return data.size();
     }
+
+    @Override
+    public void onRowMoved(int fromPosition, int toPosition){
+        if(fromPosition < toPosition){
+            for(int i = fromPosition; i < toPosition; i++){
+                Collections.swap(data, i, i+1);
+            }
+        }
+        else {
+            for(int i = fromPosition; i>toPosition; i--){
+                Collections.swap(data, i, i-1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onRowSelected(MyViewHolder myViewHolder){
+        myViewHolder.rowView.setBackgroundColor(Color.GRAY);
+    }
+
+    @Override
+    public void onRowClear(MyViewHolder myViewHolder){
+        myViewHolder.rowView.setBackgroundColor(Color.WHITE);
+    }
+
 }

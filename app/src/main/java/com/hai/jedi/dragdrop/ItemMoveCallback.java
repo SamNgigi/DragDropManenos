@@ -31,7 +31,7 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback{
     }
 
     @Override
-    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder){
+    public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder){
         int dragFlag = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         // Todo - Add swipe functionality here and add it to the method below.
         return makeMovementFlags(dragFlag, 0);
@@ -43,5 +43,27 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback{
                           @NonNull RecyclerView.ViewHolder target) {
         mAdapter.onRowMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
+    }
+
+    @Override
+    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState){
+        if(actionState != ItemTouchHelper.ACTION_STATE_IDLE){
+            if(viewHolder instanceof MyViewHolder) {
+                MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
+                mAdapter.onRowSelected(myViewHolder);
+            }
+        }
+    }
+
+    @Override
+    public void clearView(@NonNull RecyclerView recyclerView,
+                          @NonNull RecyclerView.ViewHolder viewHolder){
+        super.clearView(recyclerView, viewHolder);
+
+        if(viewHolder instanceof MyViewHolder){
+            MyViewHolder myViewHolder = (MyViewHolder) viewHolder;
+            mAdapter.onRowClear(myViewHolder);
+
+        }
     }
 }
