@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Drag&amp;Drop</string>
+    <string name="drag_handle">drag_handle</string>
 </resources>
